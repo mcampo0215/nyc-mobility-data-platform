@@ -46,17 +46,27 @@ df.select([
 print('DATA QUALITY CHECKS:')
 
 df.select(
-    F.sum(F.when(F.col('trip_distance') <= 0, 1).otherwise(0)).alias('non_positive_distances'),
-
     F.sum(F.when(F.col('fare_amount') < 0, 1).otherwise(0)).alias('negative_fares'),
 
     F.sum(F.when(
         F.col('tpep_dropoff_datetime') < F.col('tpep_pickup_datetime'), 1
     ).otherwise(0)).alias('negative_durations'),
+).show()
 
-    F.sum(F.when(
-        F.col('passenger_count') <= 0, 1
-    ).otherwise(0)).alias('non_positive_passengers')
+print('DISTANCE QUALITY CHECKS:')
+
+df.select(
+    F.sum(F.when(F.col('trip_distance') < 0, 1).otherwise(0)).alias('negative_distances'),
+
+    F.sum(F.when(F.col('trip_distance') == 0, 1).otherwise(0)).alias('zero_distances')
+).show()
+
+print('PASSENGER QUALITY CHECKS:')
+
+df.select(
+    F.sum(F.when(F.col('passenger_count') < 0, 1).otherwise(0)).alias('negative_passengers'),
+
+    F.sum(F.when(F.col('passenger_count') == 0, 1).otherwise(0)).alias('zero_passengers')
 ).show()
 
 # Examine numerical statistics
