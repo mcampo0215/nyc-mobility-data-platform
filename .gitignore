@@ -14,7 +14,8 @@ __pycache__/
 # Local datasets
 data/raw/
 data/processed/
-
+data/silver/
+data/rejected/
 # IDE files
 .vscode/
 
